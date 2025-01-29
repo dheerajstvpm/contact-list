@@ -10,10 +10,10 @@ router.get('/', (req: Request, res: Response) => {
 
 router.post("/contacts",
     check("name").notEmpty().withMessage("Please enter a Name"),
-    check("mobileNumber")
+    check("phone")
         .matches(/[\d]{10}/)
         .withMessage("Mobile number must contain exactly 10 numbers"),
-    check("mobileNumber")
+    check("phone")
         .matches(/^[6-9][\d]{9}/)
         .withMessage("Please enter a valid mobile number"),
     check('address').notEmpty()
@@ -28,12 +28,12 @@ router.get("/contacts", contactController.readContacts);
 
 router.patch("/contacts",
     check("name").notEmpty().withMessage("Please enter a Name"),
-    check("mobileNumber")
+    check("phone")
         .matches(/[\d]{10}/)
-        .withMessage("Mobile number must contain exactly 10 numbers"),
-    check("mobileNumber")
+        .withMessage("Phone number must contain exactly 10 numbers"),
+    check("phone")
         .matches(/^[6-9][\d]{9}/)
-        .withMessage("Please enter a valid mobile number"),
+        .withMessage("Please enter a valid phone number"),
     check('address').notEmpty()
         .withMessage('Please enter a Address'),
     check("email").notEmpty().withMessage("Please enter a email"),

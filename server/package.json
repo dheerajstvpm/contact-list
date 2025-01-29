@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "serve": "tsc && node --watch-path ./ ./dist/server.js",
+    "start": "tsc && node --watch-path ./ ./dist/server.js",
     "format": "npx prettier . --write",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

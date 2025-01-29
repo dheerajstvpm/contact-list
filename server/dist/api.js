@@ -10,20 +10,20 @@ const router = express_1.default.Router();
 router.get('/', (req, res) => {
     res.status(200).send("From API route");
 });
-router.post("/contacts", (0, express_validator_1.check)("name").notEmpty().withMessage("Please enter a Name"), (0, express_validator_1.check)("mobileNumber")
+router.post("/contacts", (0, express_validator_1.check)("name").notEmpty().withMessage("Please enter a Name"), (0, express_validator_1.check)("phone")
     .matches(/[\d]{10}/)
-    .withMessage("Mobile number must contain exactly 10 numbers"), (0, express_validator_1.check)("mobileNumber")
+    .withMessage("Mobile number must contain exactly 10 numbers"), (0, express_validator_1.check)("phone")
     .matches(/^[6-9][\d]{9}/)
     .withMessage("Please enter a valid mobile number"), (0, express_validator_1.check)('address').notEmpty()
     .withMessage('Please enter a Address'), (0, express_validator_1.check)("email").notEmpty().withMessage("Please enter a email"), (0, express_validator_1.check)("email")
     .matches(/^\w+([._]?\w+)?@\w+(\.\w{2,3})(\.\w{2})?$/)
     .withMessage("Please enter a valid email id"), contactController_1.default.createContact);
 router.get("/contacts", contactController_1.default.readContacts);
-router.patch("/contacts", (0, express_validator_1.check)("name").notEmpty().withMessage("Please enter a Name"), (0, express_validator_1.check)("mobileNumber")
+router.patch("/contacts", (0, express_validator_1.check)("name").notEmpty().withMessage("Please enter a Name"), (0, express_validator_1.check)("phone")
     .matches(/[\d]{10}/)
-    .withMessage("Mobile number must contain exactly 10 numbers"), (0, express_validator_1.check)("mobileNumber")
+    .withMessage("Phone number must contain exactly 10 numbers"), (0, express_validator_1.check)("phone")
     .matches(/^[6-9][\d]{9}/)
-    .withMessage("Please enter a valid mobile number"), (0, express_validator_1.check)('address').notEmpty()
+    .withMessage("Please enter a valid phone number"), (0, express_validator_1.check)('address').notEmpty()
     .withMessage('Please enter a Address'), (0, express_validator_1.check)("email").notEmpty().withMessage("Please enter a email"), (0, express_validator_1.check)("email")
     .matches(/^\w+([._]?\w+)?@\w+(\.\w{2,3})(\.\w{2})?$/)
     .withMessage("Please enter a valid email id"), contactController_1.default.updateContact);
