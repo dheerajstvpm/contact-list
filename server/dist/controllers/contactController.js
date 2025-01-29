@@ -23,16 +23,30 @@ const createContact = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         return;
     }
     const { name, phone, email, address } = req.body;
-    const contact = new contactDetails_1.default({ name, phone, email, address });
+    const contact = new contactDetails_1.default({ name, phone, email: email.toLowerCase(), address });
     try {
-        const response = yield contact.save();
-        console.log(`Success: ${response}`);
-        const contacts = yield contactDetails_1.default.find({});
-        res.status(200).json(contacts);
+        const [phoneResult, emailResult] = yield Promise.all([
+            contactDetails_1.default.findOne({ phone: phone }),
+            contactDetails_1.default.findOne({ email: email.toLowerCase() }),
+        ]);
+        if (phoneResult) {
+            console.log("Phone number already exists");
+            res.status(400).send("Phone number already exists");
+        }
+        else if (emailResult) {
+            console.log("Email id already exists");
+            res.status(400).send("Email id already exists");
+        }
+        else {
+            const response = yield contact.save();
+            console.log(`Success: ${response}`);
+            const contacts = yield contactDetails_1.default.find({});
+            res.status(200).json(contacts);
+        }
     }
     catch (err) {
         console.log(err);
-        res.status(404);
+        res.status(400).send(err);
     }
 });
 const readContacts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -42,7 +56,7 @@ const readContacts = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     catch (err) {
         console.log(err);
-        res.status(404);
+        res.status(404).send(err);
     }
 });
 const updateContact = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -54,14 +68,28 @@ const updateContact = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     const { contactId, name, phone, email, address } = req.body;
     try {
-        const response = yield contactDetails_1.default.findOneAndUpdate({ _id: contactId }, { $set: { name: name, phone: phone, email: email, address: address } });
-        console.log(`Success: ${response}`);
-        const contacts = yield contactDetails_1.default.find({});
-        res.status(200).json(contacts);
+        const [phoneResult, emailResult] = yield Promise.all([
+            contactDetails_1.default.findOne({ phone: phone }),
+            contactDetails_1.default.findOne({ email: email.toLowerCase() }),
+        ]);
+        if (phoneResult) {
+            console.log("Phone number already exists");
+            res.status(400).send("Phone number already exists");
+        }
+        else if (emailResult) {
+            console.log("Email id already exists");
+            res.status(400).send("Email id already exists");
+        }
+        else {
+            const response = yield contactDetails_1.default.findOneAndUpdate({ _id: contactId }, { $set: { name: name, phone: phone, email: email.toLowerCase(), address: address } });
+            console.log(`Success: ${response}`);
+            const contacts = yield contactDetails_1.default.find({});
+            res.status(200).json(contacts);
+        }
     }
     catch (err) {
         console.log(err);
-        res.status(404);
+        res.status(400).send(err);
     }
 });
 const deleteContact = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -79,7 +107,7 @@ const deleteContact = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (err) {
         console.log(err);
-        res.status(404);
+        res.status(400).send(err);
     }
 });
 const contactController = {
