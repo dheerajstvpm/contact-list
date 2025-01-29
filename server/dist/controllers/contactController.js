@@ -25,10 +25,8 @@ const createContact = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const { name, phone, email, address } = req.body;
     const contact = new contactDetails_1.default({ name, phone, email: email.toLowerCase(), address });
     try {
-        const [phoneResult, emailResult] = yield Promise.all([
-            contactDetails_1.default.findOne({ phone: phone }),
-            contactDetails_1.default.findOne({ email: email.toLowerCase() }),
-        ]);
+        const phoneResult = yield contactDetails_1.default.findOne({ phone: phone });
+        const emailResult = email ? yield contactDetails_1.default.findOne({ email: email.toLowerCase() }) : false;
         if (phoneResult) {
             console.log("Phone number already exists");
             res.status(400).send("Phone number already exists");

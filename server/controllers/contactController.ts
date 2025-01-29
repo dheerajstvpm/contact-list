@@ -13,10 +13,8 @@ const createContact = async (req: Request, res: Response) => {
   const { name, phone, email, address } = req.body;
   const contact = new Contact({ name, phone, email: email.toLowerCase(), address });
   try {
-    const [phoneResult, emailResult] = await Promise.all([
-      Contact.findOne({ phone: phone }),
-      Contact.findOne({ email: email.toLowerCase() }),
-    ]);
+    const phoneResult = await Contact.findOne({ phone: phone });
+    const emailResult = email ? await Contact.findOne({ email: email.toLowerCase() }) : false;
     if (phoneResult) {
       console.log("Phone number already exists");
       res.status(400).send("Phone number already exists");

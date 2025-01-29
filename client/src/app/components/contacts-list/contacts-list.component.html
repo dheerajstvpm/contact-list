@@ -1,12 +1,10 @@
-<mat-toolbar>
-    <span>Contacts</span>
-</mat-toolbar>
 <mat-list role="list">
     <mat-divider></mat-divider>
-    <div class="flex justify-between items-center">
-        <mat-checkbox class="example-margin" [(ngModel)]="checked" />
-        <mat-list-item role="listitem" aria-label="edit" (click)="editContact()">Item 1
+    <div class="flex justify-between items-center pe-3">
+        <mat-checkbox [(ngModel)]="checked" />
+        <mat-list-item role="listitem">Item 1
         </mat-list-item>
+        <mat-icon aria-label="edit" (click)="editContact()">edit</mat-icon>
     </div>
     <mat-divider></mat-divider>
     <mat-list-item role="listitem">Item 2</mat-list-item>
