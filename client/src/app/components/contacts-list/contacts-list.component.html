@@ -1,0 +1,16 @@
+<mat-toolbar>
+    <span>Contacts</span>
+</mat-toolbar>
+<mat-list role="list">
+    <mat-divider></mat-divider>
+    <div class="flex justify-between items-center">
+        <mat-checkbox class="example-margin" [(ngModel)]="checked" />
+        <mat-list-item role="listitem" aria-label="edit" (click)="editContact()">Item 1
+        </mat-list-item>
+    </div>
+    <mat-divider></mat-divider>
+    <mat-list-item role="listitem">Item 2</mat-list-item>
+    <mat-list-item role="listitem">Item 3</mat-list-item>
+</mat-list>
+<mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
+</mat-paginator>
