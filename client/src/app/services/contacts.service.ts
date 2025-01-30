@@ -29,7 +29,6 @@ export class ContactsService {
       const selectedContact = localStorage.getItem(`selectedContact`);
       return selectedContact ? JSON.parse(selectedContact) : undefined;
     } catch (error) {
-      console.log(error);
       return;
     }
   };
@@ -42,7 +41,7 @@ export class ContactsService {
     try {
       localStorage.setItem(`selectedContact`, JSON.stringify(contact))
     } catch (error) {
-      console.log(error);
+      console.warn(error);
     }
   }
 
@@ -87,7 +86,6 @@ export class ContactsService {
       )
       .subscribe({
         next: (res) => {
-          console.log(res);
           this.$contacts.next(res)
           this.route.navigate(['/']);
         },
@@ -104,11 +102,10 @@ export class ContactsService {
     this.contactsDataService.getContacts()
       .subscribe({
         next: (res) => {
-          console.log(res);
           this.$contacts.next(res)
         },
         error: (err) => {
-          console.log(err.error);
+          console.warn(err.error);
         }
       });
   }
@@ -142,7 +139,7 @@ export class ContactsService {
           this.$contacts.next(res)
         },
         error: (err) => {
-          console.log(err.error);
+          console.warn(err.error);
         }
       });
   }

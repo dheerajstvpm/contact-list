@@ -77,8 +77,6 @@ export class ContactsListComponent implements OnInit, AfterViewInit {
   }
 
   downloadCsv(){
-    console.log(123123);
-    
     const csv = generateCsv(this.csvConfig)(this.contactsService.convertToDownloadableFormat(this.contacts));
     download(this.csvConfig)(csv)
   }

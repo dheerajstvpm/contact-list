@@ -9,6 +9,4 @@ import { MatDialogModule } from '@angular/material/dialog';
   templateUrl: './delete-contact-dialog.component.html',
   styleUrl: './delete-contact-dialog.component.scss'
 })
-export class DeleteContactDialogComponent {
-
-}
+export class DeleteContactDialogComponent { }
