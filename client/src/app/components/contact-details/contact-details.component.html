@@ -1,4 +1,4 @@
-<form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+<form class="p-3" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
     <h2>Contact</h2>
     <mat-form-field>
         <mat-label for="name">Name: </mat-label>
@@ -24,7 +24,7 @@
         <mat-error>Please enter a valid email address</mat-error>
         }
     </mat-form-field>
-    <div formGroupName="addressForm">
+    <div formGroupName="address">
         <h2>Address</h2>
         <mat-form-field>
             <mat-label for="street">Street: </mat-label>
@@ -41,10 +41,12 @@
         <mat-form-field>
             <mat-label for="zip">Zip Code: </mat-label>
             <input matInput id="zip" type="text" formControlName="zip">
-            @if (contactForm.controls.addressForm.controls.zip.hasError('pattern')) {
+            @if (contactForm.controls.address.controls.zip.hasError('pattern')) {
             <mat-error>Please enter a valid zip code</mat-error>
             }
         </mat-form-field>
     </div>
-    <button type="submit" [disabled]="!contactForm.valid">Submit</button>
+    <button mat-raised-button type="submit" [disabled]="!contactForm.valid || (loadingStatus | async)">
+        {{showAddButton ?'Add': 'Edit'}}
+    </button>
 </form>

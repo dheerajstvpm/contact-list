@@ -7,7 +7,12 @@ const contactSchema = new Schema(
     name: String,
     phone: String,
     email: String,
-    address: String,
+    address: {
+      street: String,
+      city: String,
+      state: String,
+      zip: String
+    }
   },
   { timestamps: true },
 );

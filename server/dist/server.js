@@ -31,9 +31,9 @@ app.listen(3000, (error) => {
     console.log("Server running on port: 3000");
 });
 app.get('/', (req, res) => {
-    res.status(200).send('Success');
+    res.status(200).json('Success');
 });
 app.use('/api', api_1.default);
 app.use((req, res) => {
-    res.status(404).send("Page not found");
+    res.status(404).json("Page not found");
 });

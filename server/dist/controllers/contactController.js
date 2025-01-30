@@ -19,7 +19,7 @@ const createContact = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const validationErrors = (0, express_validator_1.validationResult)(req);
     if (!validationErrors.isEmpty()) {
         console.log(validationErrors);
-        res.status(404).send(validationErrors);
+        res.status(404).json(validationErrors);
         return;
     }
     const { name, phone, email, address } = req.body;
@@ -29,11 +29,11 @@ const createContact = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const emailResult = email ? yield contactDetails_1.default.findOne({ email: email.toLowerCase() }) : false;
         if (phoneResult) {
             console.log("Phone number already exists");
-            res.status(400).send("Phone number already exists");
+            res.status(400).json("Phone number already exists");
         }
         else if (emailResult) {
             console.log("Email id already exists");
-            res.status(400).send("Email id already exists");
+            res.status(400).json("Email id already exists");
         }
         else {
             const response = yield contact.save();
@@ -44,7 +44,7 @@ const createContact = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (err) {
         console.log(err);
-        res.status(400).send(err);
+        res.status(400).json(err);
     }
 });
 const readContacts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -54,32 +54,31 @@ const readContacts = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     catch (err) {
         console.log(err);
-        res.status(404).send(err);
+        res.status(404).json(err);
     }
 });
 const updateContact = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const validationErrors = (0, express_validator_1.validationResult)(req);
     if (!validationErrors.isEmpty()) {
         console.log(validationErrors);
-        res.status(404).send(validationErrors);
+        res.status(404).json(validationErrors);
         return;
     }
-    const { contactId, name, phone, email, address } = req.body;
+    const { _id, name, phone, email, address } = req.body;
+    console.log(req.body);
     try {
-        const [phoneResult, emailResult] = yield Promise.all([
-            contactDetails_1.default.findOne({ phone: phone }),
-            contactDetails_1.default.findOne({ email: email.toLowerCase() }),
-        ]);
-        if (phoneResult) {
+        const phoneResult = yield contactDetails_1.default.findOne({ phone: phone });
+        const emailResult = email ? yield contactDetails_1.default.findOne({ email: email.toLowerCase() }) : false;
+        if (phoneResult && (phoneResult === null || phoneResult === void 0 ? void 0 : phoneResult.phone) !== phone) {
             console.log("Phone number already exists");
-            res.status(400).send("Phone number already exists");
+            res.status(400).json("Phone number already exists");
         }
-        else if (emailResult) {
+        else if (emailResult && (emailResult === null || emailResult === void 0 ? void 0 : emailResult.email) !== email.toLowerCase()) {
             console.log("Email id already exists");
-            res.status(400).send("Email id already exists");
+            res.status(400).json("Email id already exists");
         }
         else {
-            const response = yield contactDetails_1.default.findOneAndUpdate({ _id: contactId }, { $set: { name: name, phone: phone, email: email.toLowerCase(), address: address } });
+            const response = yield contactDetails_1.default.findOneAndUpdate({ _id: _id }, { $set: { name: name, phone: phone, email: email.toLowerCase(), address: address } });
             console.log(`Success: ${response}`);
             const contacts = yield contactDetails_1.default.find({});
             res.status(200).json(contacts);
@@ -87,25 +86,25 @@ const updateContact = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (err) {
         console.log(err);
-        res.status(400).send(err);
+        res.status(400).json(err);
     }
 });
 const deleteContact = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const validationErrors = (0, express_validator_1.validationResult)(req);
     if (!validationErrors.isEmpty()) {
         console.log(validationErrors);
-        res.status(404).send(validationErrors);
+        res.status(404).json(validationErrors);
         return;
     }
     try {
-        const response = yield contactDetails_1.default.findOneAndDelete({ _id: req.body.contactId });
+        const response = yield contactDetails_1.default.findOneAndDelete({ _id: req.body._id });
         console.log(`Success: ${response}`);
         const contacts = yield contactDetails_1.default.find({});
         res.status(200).json(contacts);
     }
     catch (err) {
         console.log(err);
-        res.status(400).send(err);
+        res.status(400).json(err);
     }
 });
 const contactController = {

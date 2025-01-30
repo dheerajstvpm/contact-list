@@ -8,7 +8,7 @@ const contactController_1 = __importDefault(require("./controllers/contactContro
 const express_validator_1 = require("express-validator");
 const router = express_1.default.Router();
 router.get('/', (req, res) => {
-    res.status(200).send("From API route");
+    res.status(200).json("From API route");
 });
 router.post("/contacts", (0, express_validator_1.check)("name").notEmpty().withMessage("Please enter a Name"), (0, express_validator_1.check)("phone")
     .matches(/^[\d]{10}$/)
@@ -25,5 +25,5 @@ router.patch("/contacts", (0, express_validator_1.check)("name").notEmpty().with
     .withMessage("Please enter a valid phone number"), (0, express_validator_1.check)("email")
     .matches(/^$|^(\w+([-+.]?\w+)?@\w+(\.\w{2,3})(\.\w{2})?)$/)
     .withMessage("Please enter a valid email id"), contactController_1.default.updateContact);
-router.delete("/contacts", contactController_1.default.deleteContact);
+router.post("/delete", contactController_1.default.deleteContact);
 exports.default = router;

@@ -5,7 +5,7 @@ import { check } from "express-validator";
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response) => {
-    res.status(200).send("From API route");
+    res.status(200).json("From API route");
 })
 
 router.post("/contacts",
@@ -36,6 +36,6 @@ router.patch("/contacts",
         .withMessage("Please enter a valid email id"),
     contactController.updateContact);
 
-router.delete("/contacts", contactController.deleteContact);
+router.post("/delete", contactController.deleteContact);
 
 export default router;

@@ -3,10 +3,16 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 export type Contact = {
+  _id: string,
   name: string,
   phone: string,
   email: string,
-  address: string
+  address: {
+    street: string,
+    city: string,
+    state: string,
+    zip: string
+  }
 }
 
 @Injectable({
@@ -18,13 +24,18 @@ export class ContactsDataService {
   private apiUrl = `http://localhost:3000/api`
 
   addContact(contact: Contact): Observable<Contact[]> {
-    console.warn(contact);
     return this.http.post<Contact[]>(`${this.apiUrl}/contacts`, contact)
   }
 
-  getContacts() {
-    this.http.get<Contact[]>(`${this.apiUrl}/contacts`).subscribe(res => {
-      console.log(res);
-    });
+  getContacts(): Observable<Contact[]> {
+    return this.http.get<Contact[]>(`${this.apiUrl}/contacts`)
+  }
+
+  updateContact(contact: Contact): Observable<Contact[]> {
+    return this.http.patch<Contact[]>(`${this.apiUrl}/contacts`, contact)
+  }
+
+  deleteContact(_id: string): Observable<Contact[]> {
+    return this.http.post<Contact[]>(`${this.apiUrl}/delete`, {_id})
   }
 }
