@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { Contact, ContactsDataService } from './contacts-data.service';
+import { ContactsDataService } from './contacts-data.service';
 import { BehaviorSubject, finalize, Observable, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Contact } from '../models/contacts.model';
 
 @Injectable({
   providedIn: 'root'

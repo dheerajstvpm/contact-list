@@ -1,19 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
-export type Contact = {
-  _id: string,
-  name: string,
-  phone: string,
-  email: string,
-  address: {
-    street: string,
-    city: string,
-    state: string,
-    zip: string
-  }
-}
+import { Contact } from '../models/contacts.model';
 
 @Injectable({
   providedIn: 'root'

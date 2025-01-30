@@ -1,4 +1,11 @@
-<mat-toolbar>
-    <span class="cursor-pointer" (click)="goToHome()">Contacts</span>
-</mat-toolbar>
-<router-outlet />
+<div class="h-full w-full flex flex-col justify-start">
+    <mat-toolbar class="!bg-emerald-500">
+        <div class="cursor-pointer flex items-center gap-2 text-white" (click)="goToHome()">
+            <mat-icon>home</mat-icon>
+            <span>Contacts</span>
+        </div>
+    </mat-toolbar>
+    <div class="flex-1">
+        <router-outlet class="w-full h-full" />
+    </div>
+</div>

@@ -1,34 +1,22 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FormsModule } from '@angular/forms';
 import { ContactsService } from '../../services/contacts.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { Contact } from '../../services/contacts-data.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DeleteContactDialogComponent } from '../delete-contact-dialog/delete-contact-dialog.component';
 import { mkConfig, generateCsv, download } from "export-to-csv";
-
-export type ContactListItem = {
-  _id: string,
-  name: string,
-  phone: string,
-  email: string,
-  address: string
-}
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Contact, ContactListItem } from '../../models/contacts.model';
 
 @Component({
   selector: 'app-contacts-list',
-  imports: [MatButtonModule, MatIconModule, MatListModule, MatPaginatorModule, MatDividerModule, MatCheckboxModule, FormsModule,
-    MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatDialogModule
-  ],
+  imports: [MatButtonModule, MatIconModule, MatPaginatorModule, MatFormFieldModule, MatInputModule,
+    MatTableModule, MatSortModule, MatDialogModule, MatTooltipModule],
   templateUrl: './contacts-list.component.html',
   styleUrl: './contacts-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
