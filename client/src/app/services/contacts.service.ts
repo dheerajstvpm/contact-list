@@ -3,7 +3,8 @@ import { ContactsDataService } from './contacts-data.service';
 import { BehaviorSubject, finalize, Observable, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Contact } from '../models/contacts.model';
+import { Contact, ContactListItem } from '../models/contacts.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -54,11 +55,11 @@ export class ContactsService {
     this.route.navigate(['/details']);
   }
 
-  resetSelectedContact(){
+  resetSelectedContact() {
     this.selectedContact = undefined;
   }
 
-  convertToContactListItem(contacts: Contact[]) {
+  convertToContactListItem(contacts: Contact[]): ContactListItem[] {
     return contacts.map(contact => {
       const { _id, name, phone, email, address } = contact;
       const { street, city, state, zip } = address;
@@ -67,12 +68,19 @@ export class ContactsService {
     });
   }
 
-  convertToDownloadableFormat(contacts: Contact[]) {
+  convertToDownloadableFormat(contacts: Contact[]):Omit<ContactListItem,'_id'>[] {
     return contacts.map(contact => {
       const { name, phone, email, address } = contact;
       const { street, city, state, zip } = address;
       const addressString = `${street && city ? street + ', ' : street}${city && state ? city + ', ' : city}${state && zip ? state + ', ' : state}${zip}`;
       return { name, phone, email, address: addressString };
+    });
+  }
+
+  openToast(err: HttpErrorResponse) {
+    this._snackBar.open(err.error, 'X', {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
     });
   }
 
@@ -90,10 +98,7 @@ export class ContactsService {
           this.route.navigate(['/']);
         },
         error: (err) => {
-          this._snackBar.open(err.error, 'X', {
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-          });
+          this.openToast(err);
         }
       });
   }
@@ -105,7 +110,7 @@ export class ContactsService {
           this.$contacts.next(res)
         },
         error: (err) => {
-          console.warn(err.error);
+          this.openToast(err);
         }
       });
   }
@@ -124,10 +129,7 @@ export class ContactsService {
           this.route.navigate(['/']);
         },
         error: (err) => {
-          this._snackBar.open(err.error, 'X', {
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-          });
+          this.openToast(err);
         }
       });
   }
@@ -139,7 +141,7 @@ export class ContactsService {
           this.$contacts.next(res)
         },
         error: (err) => {
-          console.warn(err.error);
+          this.openToast(err);
         }
       });
   }
