@@ -9,7 +9,6 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DeleteContactDialogComponent } from '../delete-contact-dialog/delete-contact-dialog.component';
-import { mkConfig, generateCsv, download } from "export-to-csv";
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Contact, ContactListItem } from '../../models/contacts.model';
 
@@ -25,7 +24,6 @@ export class ContactsListComponent implements OnInit, AfterViewInit {
   private contactsService = inject(ContactsService);
   private dialog = inject(MatDialog);
 
-  csvConfig = mkConfig({ useKeysAsHeaders: true });
   displayedColumns: string[] = ['name', 'phone', 'email', 'address', 'action'];
   dataSource: MatTableDataSource<ContactListItem> = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -39,8 +37,7 @@ export class ContactsListComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.contactsService.contacts.subscribe((contacts) => {
-      this.contacts = contacts;
-      this.dataSource.data = this.contactsService.convertToContactListItem(contacts);
+      this.dataSource.data = contacts;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
@@ -59,7 +56,7 @@ export class ContactsListComponent implements OnInit, AfterViewInit {
   }
 
   editContact(row: ContactListItem) {
-    this.contactsService.editContact(this.contacts.find(contact => row._id === contact._id));
+    this.contactsService.editContact(row._id);
   }
 
   deleteContact(row: ContactListItem) {
@@ -76,7 +73,6 @@ export class ContactsListComponent implements OnInit, AfterViewInit {
   }
 
   downloadCsv(){
-    const csv = generateCsv(this.csvConfig)(this.contactsService.convertToDownloadableFormat(this.contacts));
-    download(this.csvConfig)(csv)
+    this.contactsService.downloadCsv()
   }
 }

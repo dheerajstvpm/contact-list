@@ -54,12 +54,13 @@ const updateContact = async (req: Request, res: Response) => {
   console.log(req.body);
   
   try {
-    const phoneResult = await Contact.findOne({ phone: phone });
-    const emailResult = email ? await Contact.findOne({ email: email.toLowerCase() }) : false;
-    if (phoneResult && phoneResult?.phone === phone) {
+    const phoneExists = await Contact.findOne({ phone: phone });
+    const emailExists = email ? await Contact.findOne({ email: email.toLowerCase() }) : false;
+    const currentContact = await Contact.findOne({ _id: _id });
+    if (phoneExists && currentContact?.phone !== phone) {
       console.log("Phone number already exists");
       res.status(400).json("Phone number already exists");
-    } else if (emailResult && emailResult?.email !== email.toLowerCase()) {
+    } else if (emailExists && currentContact?.email !== email.toLowerCase()) {
       console.log("Email id already exists");
       res.status(400).json("Email id already exists");
     } else {

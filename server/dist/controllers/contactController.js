@@ -67,13 +67,14 @@ const updateContact = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const { _id, name, phone, email, address } = req.body;
     console.log(req.body);
     try {
-        const phoneResult = yield contactDetails_1.default.findOne({ phone: phone });
-        const emailResult = email ? yield contactDetails_1.default.findOne({ email: email.toLowerCase() }) : false;
-        if (phoneResult && (phoneResult === null || phoneResult === void 0 ? void 0 : phoneResult.phone) === phone) {
+        const phoneExists = yield contactDetails_1.default.findOne({ phone: phone });
+        const emailExists = email ? yield contactDetails_1.default.findOne({ email: email.toLowerCase() }) : false;
+        const currentContact = yield contactDetails_1.default.findOne({ _id: _id });
+        if (phoneExists && (currentContact === null || currentContact === void 0 ? void 0 : currentContact.phone) !== phone) {
             console.log("Phone number already exists");
             res.status(400).json("Phone number already exists");
         }
-        else if (emailResult && (emailResult === null || emailResult === void 0 ? void 0 : emailResult.email) !== email.toLowerCase()) {
+        else if (emailExists && (currentContact === null || currentContact === void 0 ? void 0 : currentContact.email) !== email.toLowerCase()) {
             console.log("Email id already exists");
             res.status(400).json("Email id already exists");
         }

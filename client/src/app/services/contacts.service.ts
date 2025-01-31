@@ -1,10 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { ContactsDataService } from './contacts-data.service';
-import { BehaviorSubject, finalize, Observable, of, tap } from 'rxjs';
+import { BehaviorSubject, finalize, map, Observable, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Contact, ContactListItem } from '../models/contacts.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { mkConfig, generateCsv, download } from "export-to-csv";
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +17,16 @@ export class ContactsService {
   private _snackBar = inject(MatSnackBar);
   private $contacts = new BehaviorSubject<Contact[]>([]);
   private $loadingStatus = new BehaviorSubject<boolean>(false);
+  csvConfig = mkConfig({ useKeysAsHeaders: true });
 
   get loadingStatus(): Observable<boolean> {
     return this.$loadingStatus.asObservable()
   }
 
-  get contacts(): Observable<Contact[]> {
-    return this.$contacts.asObservable()
+  get contacts(): Observable<ContactListItem[]> {
+    return this.$contacts.pipe(
+      map(contacts => this.convertToContactListItem(contacts))
+    )
   }
 
   get selectedContact(): Contact | undefined {
@@ -50,8 +54,8 @@ export class ContactsService {
     this.route.navigate(['/details']);
   }
 
-  editContact(contact: Contact | undefined) {
-    this.selectedContact = contact;
+  editContact(_id: string) {
+    this.selectedContact = this.$contacts.value.find(contact => _id === contact._id);
     this.route.navigate(['/details']);
   }
 
@@ -68,7 +72,7 @@ export class ContactsService {
     });
   }
 
-  convertToDownloadableFormat(contacts: Contact[]):Omit<ContactListItem,'_id'>[] {
+  convertToDownloadableFormat(contacts: Contact[]): Omit<ContactListItem, '_id'>[] {
     return contacts.map(contact => {
       const { name, phone, email, address } = contact;
       const { street, city, state, zip } = address;
@@ -144,5 +148,10 @@ export class ContactsService {
           this.openToast(err);
         }
       });
+  }
+
+  downloadCsv() {
+    const csv = generateCsv(this.csvConfig)(this.convertToDownloadableFormat(this.$contacts.value));
+    download(this.csvConfig)(csv)
   }
 }
