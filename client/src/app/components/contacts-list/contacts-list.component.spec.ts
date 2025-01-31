@@ -11,7 +11,6 @@ describe('ContactsListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [provideHttpClient(), provideHttpClientTesting(), provideAnimationsAsync()],
-      imports: [ContactsListComponent]
     })
       .compileComponents();
 

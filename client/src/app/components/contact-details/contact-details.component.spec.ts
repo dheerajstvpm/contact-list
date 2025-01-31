@@ -11,7 +11,6 @@ describe('ContactDetailsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [ provideHttpClient(), provideHttpClientTesting(), provideAnimationsAsync() ],
-      imports: [ContactDetailsComponent]
     })
     .compileComponents();
 
