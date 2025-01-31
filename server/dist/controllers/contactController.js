@@ -69,7 +69,7 @@ const updateContact = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         const phoneResult = yield contactDetails_1.default.findOne({ phone: phone });
         const emailResult = email ? yield contactDetails_1.default.findOne({ email: email.toLowerCase() }) : false;
-        if (phoneResult && (phoneResult === null || phoneResult === void 0 ? void 0 : phoneResult.phone) !== phone) {
+        if (phoneResult && (phoneResult === null || phoneResult === void 0 ? void 0 : phoneResult.phone) === phone) {
             console.log("Phone number already exists");
             res.status(400).json("Phone number already exists");
         }

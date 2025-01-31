@@ -56,7 +56,7 @@ const updateContact = async (req: Request, res: Response) => {
   try {
     const phoneResult = await Contact.findOne({ phone: phone });
     const emailResult = email ? await Contact.findOne({ email: email.toLowerCase() }) : false;
-    if (phoneResult && phoneResult?.phone !== phone) {
+    if (phoneResult && phoneResult?.phone === phone) {
       console.log("Phone number already exists");
       res.status(400).json("Phone number already exists");
     } else if (emailResult && emailResult?.email !== email.toLowerCase()) {
